@@ -1,0 +1,22 @@
+DESCRIPTION
+
+  GNU Make w/ OpenBSD Unveil() Sandboxing (Landlock LSM)
+
+AUTHOR
+
+  Justine Alexandra Roberts Tunney <jtunney@gmail.com>
+
+ORIGIN
+
+  - git clone https://github.com/jart/cosmopolitan
+    make -j8 o//third_party/make/make.com
+
+UPSTREAM
+
+  - GNU Make 4.3
+    http://ftp.gnu.org/gnu/make/make-4.3.tar.gz
+
+CHANGES
+
+  - GNU Make Unveil() Sandboxing Code Changes:
+    https://github.com/jart/cosmopolitan/blob/6a5717a48f957ed1a0ef9abd560a1e62592efdb2/third_party/make/job.c#L1703
