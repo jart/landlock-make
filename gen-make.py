@@ -12,6 +12,8 @@ with open('Makefile', 'w') as b:
   b.write('CFLAGS = -fno-pie\n')
   b.write('CPPFLAGS = -iquote .\n')
   b.write('TMPDIR = o//tmp\n')
+  b.write('IGNORE := $(shell $(MKDIR) $(TMPDIR))\n')
+  b.write('IGNORE := $(shell $(MKDIR) o/pkg)\n')
   b.write('export TMPDIR\n')
   b.write('.SUFFIXES:\n')
   b.write('.DELETE_ON_ERROR:\n')
@@ -25,7 +27,7 @@ with open('Makefile', 'w') as b:
   b.write('\n\n')
 
   b.write('.PHONY: clean\n')
-  b.write('clean:\n')
+  b.write('clean: o/pkg\n')
   b.write('\trm -rf o/pkg\n\n')
 
   b.write('o//%.o: %.c\n')

@@ -5,6 +5,7 @@ CC = o//third_party/gcc/bin/x86_64-linux-musl-gcc -static
 CFLAGS = -fno-pie
 CPPFLAGS = -iquote .
 TMPDIR = o//tmp
+IGNORE := $(shell $(MKDIR) $(TMPDIR) o/pkg)
 export TMPDIR
 .SUFFIXES:
 .DELETE_ON_ERROR:
@@ -34,7 +35,7 @@ all: \
 		o//pkg/main_19.exe
 
 .PHONY: clean
-clean:
+clean: o/pkg
 	rm -rf o/pkg
 
 o//%.o: %.c
