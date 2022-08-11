@@ -41,8 +41,8 @@ hard-coded paths. The following files are always unveiled by Make:
 
 Landlocked Make can be customized using special variables per-target:
 
-- `TARGET: .UNVEIL = [rwcx:]PATH...` to unveil without prerequisites
-- `TARGET: .UNSANDBOXED = 1` to disable sandboxing on a build target
+- `TARGET: private .UNVEIL = [rwcx:]PATH...` to unveil without prerequisites
+- `TARGET: private .UNSANDBOXED = 1` to disable sandboxing on a build target
 
 ## Performance
 

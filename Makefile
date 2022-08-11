@@ -1,12 +1,22 @@
-SHELL = /bin/false
-MKDIR = /bin/mkdir -p
 MAKEFLAGS += --no-builtin-rules
+MKDIR = /bin/mkdir -p
 CC = o//third_party/gcc/bin/x86_64-linux-musl-gcc -static
 CFLAGS = -fno-pie
 CPPFLAGS = -iquote .
 TMPDIR = o//tmp
 IGNORE := $(shell $(MKDIR) $(TMPDIR) o/pkg)
+
 export TMPDIR
+
+.STRICT = 1
+.UNVEIL =			\
+	rx:/bin			\
+	rx:/lib			\
+	rx:/usr/lib		\
+	rwcx:o/tmp		\
+	rx:build/bootstrap	\
+	rx:o/third_party/gcc
+
 .SUFFIXES:
 .DELETE_ON_ERROR:
 .FEATURES: output-sync
@@ -36,7 +46,7 @@ all: \
 
 .PHONY: clean
 clean: o/pkg
-	rm -rf o/pkg
+	/bin/rm -rf o/pkg
 
 o//%.o: %.c
 	@$(MKDIR) $(@D)
