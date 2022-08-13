@@ -49,12 +49,14 @@ clean: o/pkg
 	/bin/rm -rf o/pkg
 
 o//%.o: %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $(TMPDIR)/$(subst /,_,$@)
 	@$(MKDIR) $(@D)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< $(OUTPUT_OPTION)
+	@/bin/cp -f $(TMPDIR)/$(subst /,_,$@) $@
 
 o//%.exe:
+	$(CC) $(LDFLAGS) $(TARGET_ARCH) -o $(TMPDIR)/$(subst /,_,$@) $^
 	@$(MKDIR) $(@D)
-	$(CC) $(LDFLAGS) $(TARGET_ARCH) $(OUTPUT_OPTION) $^
+	@/bin/cp -f $(TMPDIR)/$(subst /,_,$@) $@
 
 o//%.a:
 	@$(MKDIR) $(@D)
