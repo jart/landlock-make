@@ -1,7 +1,7 @@
 MAKEFLAGS += --no-builtin-rules
 MKDIR = /bin/mkdir -p
 CC = o//third_party/gcc/bin/x86_64-linux-musl-gcc -static
-CFLAGS = -fno-pie
+AR = build/bootstrap/ar.com rcsD
 CPPFLAGS = -iquote .
 TMPDIR = o//tmp
 IGNORE := $(shell $(MKDIR) $(TMPDIR) o/pkg)
@@ -55,6 +55,10 @@ o//%.o: %.c
 o//%.exe:
 	@$(MKDIR) $(@D)
 	$(CC) $(LDFLAGS) $(TARGET_ARCH) $(OUTPUT_OPTION) $^
+
+o//%.a:
+	@$(MKDIR) $(@D)
+	$(AR) $@ $^
 
 o//pkg/fun_0_0.o: \
 		pkg/fun_0_0.c \
@@ -159,8 +163,7 @@ o//pkg/main_0.o: \
 		pkg/fun_0_18.h \
 		pkg/fun_0_19.h
 
-o//pkg/main_0.exe: \
-		o//pkg/main_0.o \
+o//pkg/fun_0.a: \
 		o//pkg/fun_0_0.o \
 		o//pkg/fun_0_1.o \
 		o//pkg/fun_0_2.o \
@@ -182,6 +185,9 @@ o//pkg/main_0.exe: \
 		o//pkg/fun_0_18.o \
 		o//pkg/fun_0_19.o
 
+o//pkg/main_0.exe: \
+		o//pkg/main_0.o \
+		o//pkg/fun_0.a
 o//pkg/fun_1_0.o: \
 		pkg/fun_1_0.c \
 		pkg/fun_1_0.h
@@ -285,8 +291,7 @@ o//pkg/main_1.o: \
 		pkg/fun_1_18.h \
 		pkg/fun_1_19.h
 
-o//pkg/main_1.exe: \
-		o//pkg/main_1.o \
+o//pkg/fun_1.a: \
 		o//pkg/fun_1_0.o \
 		o//pkg/fun_1_1.o \
 		o//pkg/fun_1_2.o \
@@ -308,6 +313,9 @@ o//pkg/main_1.exe: \
 		o//pkg/fun_1_18.o \
 		o//pkg/fun_1_19.o
 
+o//pkg/main_1.exe: \
+		o//pkg/main_1.o \
+		o//pkg/fun_1.a
 o//pkg/fun_2_0.o: \
 		pkg/fun_2_0.c \
 		pkg/fun_2_0.h
@@ -411,8 +419,7 @@ o//pkg/main_2.o: \
 		pkg/fun_2_18.h \
 		pkg/fun_2_19.h
 
-o//pkg/main_2.exe: \
-		o//pkg/main_2.o \
+o//pkg/fun_2.a: \
 		o//pkg/fun_2_0.o \
 		o//pkg/fun_2_1.o \
 		o//pkg/fun_2_2.o \
@@ -434,6 +441,9 @@ o//pkg/main_2.exe: \
 		o//pkg/fun_2_18.o \
 		o//pkg/fun_2_19.o
 
+o//pkg/main_2.exe: \
+		o//pkg/main_2.o \
+		o//pkg/fun_2.a
 o//pkg/fun_3_0.o: \
 		pkg/fun_3_0.c \
 		pkg/fun_3_0.h
@@ -537,8 +547,7 @@ o//pkg/main_3.o: \
 		pkg/fun_3_18.h \
 		pkg/fun_3_19.h
 
-o//pkg/main_3.exe: \
-		o//pkg/main_3.o \
+o//pkg/fun_3.a: \
 		o//pkg/fun_3_0.o \
 		o//pkg/fun_3_1.o \
 		o//pkg/fun_3_2.o \
@@ -560,6 +569,9 @@ o//pkg/main_3.exe: \
 		o//pkg/fun_3_18.o \
 		o//pkg/fun_3_19.o
 
+o//pkg/main_3.exe: \
+		o//pkg/main_3.o \
+		o//pkg/fun_3.a
 o//pkg/fun_4_0.o: \
 		pkg/fun_4_0.c \
 		pkg/fun_4_0.h
@@ -663,8 +675,7 @@ o//pkg/main_4.o: \
 		pkg/fun_4_18.h \
 		pkg/fun_4_19.h
 
-o//pkg/main_4.exe: \
-		o//pkg/main_4.o \
+o//pkg/fun_4.a: \
 		o//pkg/fun_4_0.o \
 		o//pkg/fun_4_1.o \
 		o//pkg/fun_4_2.o \
@@ -686,6 +697,9 @@ o//pkg/main_4.exe: \
 		o//pkg/fun_4_18.o \
 		o//pkg/fun_4_19.o
 
+o//pkg/main_4.exe: \
+		o//pkg/main_4.o \
+		o//pkg/fun_4.a
 o//pkg/fun_5_0.o: \
 		pkg/fun_5_0.c \
 		pkg/fun_5_0.h
@@ -789,8 +803,7 @@ o//pkg/main_5.o: \
 		pkg/fun_5_18.h \
 		pkg/fun_5_19.h
 
-o//pkg/main_5.exe: \
-		o//pkg/main_5.o \
+o//pkg/fun_5.a: \
 		o//pkg/fun_5_0.o \
 		o//pkg/fun_5_1.o \
 		o//pkg/fun_5_2.o \
@@ -812,6 +825,9 @@ o//pkg/main_5.exe: \
 		o//pkg/fun_5_18.o \
 		o//pkg/fun_5_19.o
 
+o//pkg/main_5.exe: \
+		o//pkg/main_5.o \
+		o//pkg/fun_5.a
 o//pkg/fun_6_0.o: \
 		pkg/fun_6_0.c \
 		pkg/fun_6_0.h
@@ -915,8 +931,7 @@ o//pkg/main_6.o: \
 		pkg/fun_6_18.h \
 		pkg/fun_6_19.h
 
-o//pkg/main_6.exe: \
-		o//pkg/main_6.o \
+o//pkg/fun_6.a: \
 		o//pkg/fun_6_0.o \
 		o//pkg/fun_6_1.o \
 		o//pkg/fun_6_2.o \
@@ -938,6 +953,9 @@ o//pkg/main_6.exe: \
 		o//pkg/fun_6_18.o \
 		o//pkg/fun_6_19.o
 
+o//pkg/main_6.exe: \
+		o//pkg/main_6.o \
+		o//pkg/fun_6.a
 o//pkg/fun_7_0.o: \
 		pkg/fun_7_0.c \
 		pkg/fun_7_0.h
@@ -1041,8 +1059,7 @@ o//pkg/main_7.o: \
 		pkg/fun_7_18.h \
 		pkg/fun_7_19.h
 
-o//pkg/main_7.exe: \
-		o//pkg/main_7.o \
+o//pkg/fun_7.a: \
 		o//pkg/fun_7_0.o \
 		o//pkg/fun_7_1.o \
 		o//pkg/fun_7_2.o \
@@ -1064,6 +1081,9 @@ o//pkg/main_7.exe: \
 		o//pkg/fun_7_18.o \
 		o//pkg/fun_7_19.o
 
+o//pkg/main_7.exe: \
+		o//pkg/main_7.o \
+		o//pkg/fun_7.a
 o//pkg/fun_8_0.o: \
 		pkg/fun_8_0.c \
 		pkg/fun_8_0.h
@@ -1167,8 +1187,7 @@ o//pkg/main_8.o: \
 		pkg/fun_8_18.h \
 		pkg/fun_8_19.h
 
-o//pkg/main_8.exe: \
-		o//pkg/main_8.o \
+o//pkg/fun_8.a: \
 		o//pkg/fun_8_0.o \
 		o//pkg/fun_8_1.o \
 		o//pkg/fun_8_2.o \
@@ -1190,6 +1209,9 @@ o//pkg/main_8.exe: \
 		o//pkg/fun_8_18.o \
 		o//pkg/fun_8_19.o
 
+o//pkg/main_8.exe: \
+		o//pkg/main_8.o \
+		o//pkg/fun_8.a
 o//pkg/fun_9_0.o: \
 		pkg/fun_9_0.c \
 		pkg/fun_9_0.h
@@ -1293,8 +1315,7 @@ o//pkg/main_9.o: \
 		pkg/fun_9_18.h \
 		pkg/fun_9_19.h
 
-o//pkg/main_9.exe: \
-		o//pkg/main_9.o \
+o//pkg/fun_9.a: \
 		o//pkg/fun_9_0.o \
 		o//pkg/fun_9_1.o \
 		o//pkg/fun_9_2.o \
@@ -1316,6 +1337,9 @@ o//pkg/main_9.exe: \
 		o//pkg/fun_9_18.o \
 		o//pkg/fun_9_19.o
 
+o//pkg/main_9.exe: \
+		o//pkg/main_9.o \
+		o//pkg/fun_9.a
 o//pkg/fun_10_0.o: \
 		pkg/fun_10_0.c \
 		pkg/fun_10_0.h
@@ -1419,8 +1443,7 @@ o//pkg/main_10.o: \
 		pkg/fun_10_18.h \
 		pkg/fun_10_19.h
 
-o//pkg/main_10.exe: \
-		o//pkg/main_10.o \
+o//pkg/fun_10.a: \
 		o//pkg/fun_10_0.o \
 		o//pkg/fun_10_1.o \
 		o//pkg/fun_10_2.o \
@@ -1442,6 +1465,9 @@ o//pkg/main_10.exe: \
 		o//pkg/fun_10_18.o \
 		o//pkg/fun_10_19.o
 
+o//pkg/main_10.exe: \
+		o//pkg/main_10.o \
+		o//pkg/fun_10.a
 o//pkg/fun_11_0.o: \
 		pkg/fun_11_0.c \
 		pkg/fun_11_0.h
@@ -1545,8 +1571,7 @@ o//pkg/main_11.o: \
 		pkg/fun_11_18.h \
 		pkg/fun_11_19.h
 
-o//pkg/main_11.exe: \
-		o//pkg/main_11.o \
+o//pkg/fun_11.a: \
 		o//pkg/fun_11_0.o \
 		o//pkg/fun_11_1.o \
 		o//pkg/fun_11_2.o \
@@ -1568,6 +1593,9 @@ o//pkg/main_11.exe: \
 		o//pkg/fun_11_18.o \
 		o//pkg/fun_11_19.o
 
+o//pkg/main_11.exe: \
+		o//pkg/main_11.o \
+		o//pkg/fun_11.a
 o//pkg/fun_12_0.o: \
 		pkg/fun_12_0.c \
 		pkg/fun_12_0.h
@@ -1671,8 +1699,7 @@ o//pkg/main_12.o: \
 		pkg/fun_12_18.h \
 		pkg/fun_12_19.h
 
-o//pkg/main_12.exe: \
-		o//pkg/main_12.o \
+o//pkg/fun_12.a: \
 		o//pkg/fun_12_0.o \
 		o//pkg/fun_12_1.o \
 		o//pkg/fun_12_2.o \
@@ -1694,6 +1721,9 @@ o//pkg/main_12.exe: \
 		o//pkg/fun_12_18.o \
 		o//pkg/fun_12_19.o
 
+o//pkg/main_12.exe: \
+		o//pkg/main_12.o \
+		o//pkg/fun_12.a
 o//pkg/fun_13_0.o: \
 		pkg/fun_13_0.c \
 		pkg/fun_13_0.h
@@ -1797,8 +1827,7 @@ o//pkg/main_13.o: \
 		pkg/fun_13_18.h \
 		pkg/fun_13_19.h
 
-o//pkg/main_13.exe: \
-		o//pkg/main_13.o \
+o//pkg/fun_13.a: \
 		o//pkg/fun_13_0.o \
 		o//pkg/fun_13_1.o \
 		o//pkg/fun_13_2.o \
@@ -1820,6 +1849,9 @@ o//pkg/main_13.exe: \
 		o//pkg/fun_13_18.o \
 		o//pkg/fun_13_19.o
 
+o//pkg/main_13.exe: \
+		o//pkg/main_13.o \
+		o//pkg/fun_13.a
 o//pkg/fun_14_0.o: \
 		pkg/fun_14_0.c \
 		pkg/fun_14_0.h
@@ -1923,8 +1955,7 @@ o//pkg/main_14.o: \
 		pkg/fun_14_18.h \
 		pkg/fun_14_19.h
 
-o//pkg/main_14.exe: \
-		o//pkg/main_14.o \
+o//pkg/fun_14.a: \
 		o//pkg/fun_14_0.o \
 		o//pkg/fun_14_1.o \
 		o//pkg/fun_14_2.o \
@@ -1946,6 +1977,9 @@ o//pkg/main_14.exe: \
 		o//pkg/fun_14_18.o \
 		o//pkg/fun_14_19.o
 
+o//pkg/main_14.exe: \
+		o//pkg/main_14.o \
+		o//pkg/fun_14.a
 o//pkg/fun_15_0.o: \
 		pkg/fun_15_0.c \
 		pkg/fun_15_0.h
@@ -2049,8 +2083,7 @@ o//pkg/main_15.o: \
 		pkg/fun_15_18.h \
 		pkg/fun_15_19.h
 
-o//pkg/main_15.exe: \
-		o//pkg/main_15.o \
+o//pkg/fun_15.a: \
 		o//pkg/fun_15_0.o \
 		o//pkg/fun_15_1.o \
 		o//pkg/fun_15_2.o \
@@ -2072,6 +2105,9 @@ o//pkg/main_15.exe: \
 		o//pkg/fun_15_18.o \
 		o//pkg/fun_15_19.o
 
+o//pkg/main_15.exe: \
+		o//pkg/main_15.o \
+		o//pkg/fun_15.a
 o//pkg/fun_16_0.o: \
 		pkg/fun_16_0.c \
 		pkg/fun_16_0.h
@@ -2175,8 +2211,7 @@ o//pkg/main_16.o: \
 		pkg/fun_16_18.h \
 		pkg/fun_16_19.h
 
-o//pkg/main_16.exe: \
-		o//pkg/main_16.o \
+o//pkg/fun_16.a: \
 		o//pkg/fun_16_0.o \
 		o//pkg/fun_16_1.o \
 		o//pkg/fun_16_2.o \
@@ -2198,6 +2233,9 @@ o//pkg/main_16.exe: \
 		o//pkg/fun_16_18.o \
 		o//pkg/fun_16_19.o
 
+o//pkg/main_16.exe: \
+		o//pkg/main_16.o \
+		o//pkg/fun_16.a
 o//pkg/fun_17_0.o: \
 		pkg/fun_17_0.c \
 		pkg/fun_17_0.h
@@ -2301,8 +2339,7 @@ o//pkg/main_17.o: \
 		pkg/fun_17_18.h \
 		pkg/fun_17_19.h
 
-o//pkg/main_17.exe: \
-		o//pkg/main_17.o \
+o//pkg/fun_17.a: \
 		o//pkg/fun_17_0.o \
 		o//pkg/fun_17_1.o \
 		o//pkg/fun_17_2.o \
@@ -2324,6 +2361,9 @@ o//pkg/main_17.exe: \
 		o//pkg/fun_17_18.o \
 		o//pkg/fun_17_19.o
 
+o//pkg/main_17.exe: \
+		o//pkg/main_17.o \
+		o//pkg/fun_17.a
 o//pkg/fun_18_0.o: \
 		pkg/fun_18_0.c \
 		pkg/fun_18_0.h
@@ -2427,8 +2467,7 @@ o//pkg/main_18.o: \
 		pkg/fun_18_18.h \
 		pkg/fun_18_19.h
 
-o//pkg/main_18.exe: \
-		o//pkg/main_18.o \
+o//pkg/fun_18.a: \
 		o//pkg/fun_18_0.o \
 		o//pkg/fun_18_1.o \
 		o//pkg/fun_18_2.o \
@@ -2450,6 +2489,9 @@ o//pkg/main_18.exe: \
 		o//pkg/fun_18_18.o \
 		o//pkg/fun_18_19.o
 
+o//pkg/main_18.exe: \
+		o//pkg/main_18.o \
+		o//pkg/fun_18.a
 o//pkg/fun_19_0.o: \
 		pkg/fun_19_0.c \
 		pkg/fun_19_0.h
@@ -2553,8 +2595,7 @@ o//pkg/main_19.o: \
 		pkg/fun_19_18.h \
 		pkg/fun_19_19.h
 
-o//pkg/main_19.exe: \
-		o//pkg/main_19.o \
+o//pkg/fun_19.a: \
 		o//pkg/fun_19_0.o \
 		o//pkg/fun_19_1.o \
 		o//pkg/fun_19_2.o \
@@ -2576,3 +2617,6 @@ o//pkg/main_19.exe: \
 		o//pkg/fun_19_18.o \
 		o//pkg/fun_19_19.o
 
+o//pkg/main_19.exe: \
+		o//pkg/main_19.o \
+		o//pkg/fun_19.a

@@ -5,17 +5,28 @@
 
 with open('Makefile', 'w') as b:
 
-  b.write('SHELL = /bin/false\n')
-  b.write('MKDIR = /bin/mkdir -p\n')
   b.write('MAKEFLAGS += --no-builtin-rules\n')
+  b.write('MKDIR = /bin/mkdir -p\n')
   b.write('CC = o//third_party/gcc/bin/x86_64-linux-musl-gcc -static\n')
-  b.write('CFLAGS = -fno-pie\n')
+  b.write('AR = build/bootstrap/ar.com rcsD\n')
   b.write('CPPFLAGS = -iquote .\n')
   b.write('TMPDIR = o//tmp\n')
   b.write('IGNORE := $(shell $(MKDIR) $(TMPDIR) o/pkg)\n')
   b.write('\n')
+
   b.write('export TMPDIR\n')
   b.write('\n')
+
+  b.write('.STRICT = 1\n')
+  b.write('.UNVEIL =			\\\n')
+  b.write('	rx:/bin			\\\n')
+  b.write('	rx:/lib			\\\n')
+  b.write('	rx:/usr/lib		\\\n')
+  b.write('	rwcx:o/tmp		\\\n')
+  b.write('	rx:build/bootstrap	\\\n')
+  b.write('	rx:o/third_party/gcc\n')
+  b.write('\n')
+
   b.write('.SUFFIXES:\n')
   b.write('.DELETE_ON_ERROR:\n')
   b.write('.FEATURES: output-sync\n')
@@ -29,7 +40,7 @@ with open('Makefile', 'w') as b:
 
   b.write('.PHONY: clean\n')
   b.write('clean: o/pkg\n')
-  b.write('\trm -rf o/pkg\n\n')
+  b.write('\t/bin/rm -rf o/pkg\n\n')
 
   b.write('o//%.o: %.c\n')
   b.write('\t@$(MKDIR) $(@D)\n')
@@ -38,6 +49,10 @@ with open('Makefile', 'w') as b:
   b.write('o//%.exe:\n')
   b.write('\t@$(MKDIR) $(@D)\n')
   b.write('\t$(CC) $(LDFLAGS) $(TARGET_ARCH) $(OUTPUT_OPTION) $^\n\n')
+
+  b.write('o//%.a:\n')
+  b.write('\t@$(MKDIR) $(@D)\n')
+  b.write('\t$(AR) $@ $^\n\n')
 
   for i in range(20):
 
@@ -72,8 +87,12 @@ with open('Makefile', 'w') as b:
         f.write('  fun_%d_%d();\n' % (i, j))
       f.write('}\n')
 
-    b.write('o//pkg/main_%d.exe:' % (i))
-    b.write(' \\\n\t\to//pkg/main_%d.o' % (i))
+    b.write('o//pkg/fun_%d.a:' % (i))
     for j in range(20):
       b.write(' \\\n\t\to//pkg/fun_%d_%d.o' % (i, j))
     b.write('\n\n')
+
+    b.write('o//pkg/main_%d.exe:' % (i))
+    b.write(' \\\n\t\to//pkg/main_%d.o' % (i))
+    b.write(' \\\n\t\to//pkg/fun_%d.a' % (i))
+    b.write('\n')

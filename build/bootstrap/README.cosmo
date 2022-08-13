@@ -9,7 +9,10 @@ AUTHOR
 ORIGIN
 
   - git clone https://github.com/jart/cosmopolitan
+    cd cosmopolitan
+    git checkout 7cf66bc1617b77ecfa37b66b13f63817726c95a4
     make -j8 o//third_party/make/make.com
+    make -j8 o//tool/build/ar.com
 
 UPSTREAM
 
@@ -20,3 +23,11 @@ CHANGES
 
   - GNU Make Unveil() Sandboxing Code Changes:
     https://github.com/jart/cosmopolitan/blob/6a5717a48f957ed1a0ef9abd560a1e62592efdb2/third_party/make/job.c#L1703
+
+  - Rewrote ar tool from scratch due due to poor performance of GNU ar
+    for larger archives. You need to use ar.com with Landlock Make
+    because of the workaround we use when creating output files. The
+    standard ar tooling isn't able to simply write to the output file,
+    but instead tries to be clever and reads it. The alternative to
+    using ar.com would be to have your archive created in a temp dir and
+    then explicitly copy it to the output.
