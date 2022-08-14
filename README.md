@@ -9,4 +9,12 @@ automatically based on your build rule config. This tool will
 This demo repository contains binary releases. It's intended to show how
 Landlock Make can be configured. It also includes a comparable Bazel
 configuration, in order to demonstrate that our sandboxing solution goes
-5x faster. Further details are available at <https://justine.lol/make/>.
+5x faster. You can get started as follows:
+
+```
+git clone https://github.com/jart/landlock-make
+cd landlock-make
+build/bootstrap/make.com -j8
+```
+
+Further details are available at <https://justine.lol/make/>.

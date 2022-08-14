@@ -1,9 +1,9 @@
 # -*- conf -*-
-/build/bootstrap/*.com                                   binary
-/o/third_party/gcc/bin/*                                 binary
-/o/third_party/gcc/lib/gcc/x86_64-linux-musl/9.2.0/*.o   binary
-/o/third_party/gcc/lib/gcc/x86_64-linux-musl/9.2.0/*.a   binary
-/o/third_party/gcc/libexec/gcc/x86_64-linux-musl/9.2.0/* binary
-/o/third_party/gcc/x86_64-linux-musl/bin/*               binary
-/o/third_party/gcc/x86_64-linux-musl/lib/*.o             binary
-/o/third_party/gcc/x86_64-linux-musl/lib/*.a             binary
+/build/bootstrap/*.com                                     binary
+/build/bootstrap/gcc/bin/*                                 binary
+/build/bootstrap/gcc/lib/gcc/x86_64-linux-musl/9.2.0/*.o   binary
+/build/bootstrap/gcc/lib/gcc/x86_64-linux-musl/9.2.0/*.a   binary
+/build/bootstrap/gcc/libexec/gcc/x86_64-linux-musl/9.2.0/* binary
+/build/bootstrap/gcc/x86_64-linux-musl/bin/*               binary
+/build/bootstrap/gcc/x86_64-linux-musl/lib/*.o             binary
+/build/bootstrap/gcc/x86_64-linux-musl/lib/*.a             binary

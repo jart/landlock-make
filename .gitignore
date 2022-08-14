@@ -1,4 +1,3 @@
 # -*- conf -*-
 /bazel-*
-/o/pkg
-/o/tmp
+/o
