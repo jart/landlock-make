@@ -23,7 +23,12 @@ SRCS = $(filter %.c,$(FILES))
 HDRS = $(filter %.h,$(FILES))
 INCS = $(filter %.inc,$(FILES))
 
-.STRICT = 1
+.CPU = 2         # command cpu seconds (sigxcpu then sigkill in 2+1sec)
+.MEMORY = 32mb   # virtual memory limit per command (may be percent)
+.FSIZE = 64kb    # per file size limit
+.NPROC = 32      # per user and preexisting processes not included
+.STRICT = 1      # disables path searching and implicit unveiling
+.PLEDGE = stdio rpath wpath cpath
 .UNVEIL =			\
 	rx:/lib			\
 	rx:/usr/lib		\
@@ -61,14 +66,22 @@ clean: .UNSANDBOXED = 1
 clean:
 	rm -rf o
 
+.PHONY: update
+update: .INTERNET = 1
+update: .UNSANDBOXED = 1
+update:
+	git pull
+
 o//%.a:
 	build/bootstrap/ar.com rcsD $@ $^
 
+o//%.o: .PLEDGE = stdio rpath wpath cpath proc exec
 o//%.o: %.c
 	@/bin/echo $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $(TMPDIR)/$(subst /,_,$@)
 	@/bin/cp -f $(TMPDIR)/$(subst /,_,$@) $@
 
+o//%.exe: .PLEDGE = stdio rpath wpath cpath proc exec
 o//%.exe:
 	@/bin/echo $(CC) $(LDFLAGS) $(TARGET_ARCH) -o $@ $^
 	@$(CC) $(LDFLAGS) $(TARGET_ARCH) -o $(TMPDIR)/$(subst /,_,$@) $^
