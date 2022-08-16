@@ -48,9 +48,9 @@ usually use a separate `build/...` output directory tree, and it's
 cumbersome to have to put a `@$(MKDIR) $(@D)` command in every build
 rule. Thanks to Landlock Make, that's now automated.
 
-Where Landlock gets tricky is because of (2). Some tools, e.g. GNU Make,
-will do things like `unlink()` an output file if it exists, specifically
-to create a new inode. For tools ilke that we suggest a workaround like:
+Where Landlock gets tricky is because of (2). Some tools, e.g. GCC, will
+do things like `unlink()` an output file if it exists, specifically to
+create a new inode. For tools ilke that we suggest a workaround like:
 
 ```
 %.o: %.c
