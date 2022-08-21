@@ -1,15 +1,30 @@
 # Landlock Make
 
 Landlock Make is a GNU Make fork that sandboxes command invocations
-automatically based on your build rule config. This tool will
+automatically based on your build rule config. This tool can:
 
-1. Restrict filesystem access to target and prerequisite only
-2. Prevent public internet access, using SECCOMP BPF and ptrace()
+1. Restrict filesystem access to target and prerequisites only
+2. Prevent public internet access
+3. Enforce resource quotas
 
 This demo repository contains binary releases. It's intended to show how
 Landlock Make can be configured. It also includes a comparable Bazel
 configuration, in order to demonstrate that our sandboxing solution goes
 5x faster. You can get started as follows:
+
+## Table of Contents
+
+- [#getting-started](Getting Started)
+- [#reference](Reference)
+  - [#theory](Theory)
+  - [#cli-flags](CLI Flags)
+  - [#functions](Functions)
+  - [#variables](Variables)
+  - [#implicit-paths](Implicit Paths)
+
+## Getting Started
+
+To get started, run:
 
 ```
 git clone https://github.com/jart/landlock-make
@@ -17,8 +32,7 @@ cd landlock-make
 build/bootstrap/make.com -j8
 ```
 
-If you wish to build this project from source, rather than use the
-binary blobs, you may do so as follows:
+If you wish to build this project from source, you may do so as follows:
 
 ```
 git clone https://github.com/jart/cosmopolitan
@@ -53,7 +67,7 @@ do things like `unlink()` an output file if it exists, specifically to
 create a new inode. For tools ilke that we suggest a workaround like:
 
 ```
-%.o: %.c
+o//%.o: %.c
 	@/bin/echo $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $(TMPDIR)/$(subst /,_,$@)
 	@/bin/mkdir -p $(@D)
@@ -69,7 +83,7 @@ per build rule, you could actually write the following without
 compromising your ability to use the `-j` flag:
 
 ```
-%.o: %.c
+o//%.o: %.c
 	@/bin/echo $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $(TMPDIR)/o
 	@/bin/cp -f $(TMPDIR)/o $@
@@ -84,6 +98,9 @@ Landlock Make introduces the following command line flags:
 - `--ftrace` causes function calls to be logged to standard error.
 
 ### Variables
+
+Can be used to keep temporary directory names smaller, while preserving
+backwards compatibility with GNU Make.
 
 #### `.UNVEIL = [rwcx:]PATH`
 
@@ -101,7 +118,7 @@ dynamic shared objects, e.g.
 	rx:toolchain
 ```
 
-Permissions precede your path, follow by a colon. Possible permissions
+Permissions precede your path, followed by a colon. Possible permissions
 are `r` (read), `w` (write), `c` (create), and `x` (execute). If no
 permissions are specified, the default is read-only.
 
@@ -322,6 +339,48 @@ time to write to disk, you may want to choose a more conservative limit.
 
 This variable may be specified on a build target, a pattern rule, or the
 global scope (by order of precedence).
+
+#### `LANDLOCKMAKE_VERSION`
+
+Contains semantic version of Landlock Make. This was first introduced in
+version `1.4`. For example:
+
+```
+ifeq ($(LANDLOCKMAKE_VERSION),)
+TMPSAFE = $(TMPDIR)/$(subst /,_,$@)
+else
+TMPSAFE = $(TMPDIR)/
+endif
+```
+
+### Functions
+
+Landlock Make offers the following builtin functions.
+
+#### `$(uniq list)`
+
+Removes duplicate words in `list` while preserving ordering. The output
+is a list of words separated by single spaces. Thus,
+
+```make
+$(call uniq,foo bar foo lose)
+```
+
+returns the value:
+
+```
+foo bar lose
+```
+
+To preserve backwards compatibility with GNU Make, you can test for its
+existence and then fall back to defining a quadratic implemention using
+functional programming:
+
+```make
+ifneq ($(call uniq,c b c a),c b a)
+uniq = $(if $1,$(firstword $1) $(call uniq,$(filter-out $(firstword $1),$1)))
+endif
+```
 
 ### Implicit Paths
 

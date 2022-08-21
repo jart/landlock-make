@@ -10,7 +10,7 @@ ORIGIN
 
   - git clone https://github.com/jart/cosmopolitan
     cd cosmopolitan
-    git checkout landlockmake-1.3
+    git checkout landlockmake-1.4
     make -j8 o//third_party/make/make.com
     make -j8 o//tool/build/mkdeps.com
     make -j8 o//tool/build/ar.com
@@ -23,7 +23,7 @@ UPSTREAM
 CHANGES
 
   - GNU Make Unveil() Sandboxing Code Changes:
-    https://github.com/jart/cosmopolitan/blob/landlockmake-1.3/third_party/make/job.c
+    https://github.com/jart/cosmopolitan/blob/landlockmake-1.4/third_party/make/job.c
 
   - Add SECCOMP ptrace() filter that prevents Internet access.
 
