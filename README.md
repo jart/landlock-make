@@ -14,13 +14,13 @@ configuration, in order to demonstrate that our sandboxing solution goes
 
 ## Table of Contents
 
-- [#getting-started](Getting Started)
-- [#reference](Reference)
-  - [#theory](Theory)
-  - [#cli-flags](CLI Flags)
-  - [#functions](Functions)
-  - [#variables](Variables)
-  - [#implicit-paths](Implicit Paths)
+- [Getting Started](#getting-started)
+- [Reference](#reference)
+  - [Theory](#theory)
+  - [CLI Flags](#cli-flags)
+  - [Functions](#functions)
+  - [Variables](#variables)
+  - [Implicit Paths](#implicit-paths)
 
 ## Getting Started
 
