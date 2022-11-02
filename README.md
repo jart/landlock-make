@@ -102,6 +102,17 @@ Landlock Make introduces the following command line flags:
 Can be used to keep temporary directory names smaller, while preserving
 backwards compatibility with GNU Make.
 
+#### `.STRICT = BOOL`
+
+Enables Landlock Make.
+
+Setting this variable in the global scope will cause Landlock Make's
+sandboxing to become enabled. Otherwise, the default behavior is to be
+backwards compatible with normal GNU Make.
+
+Valid truth values are `1` or `true` case insensitively. Other values
+are false.
+
 #### `.UNVEIL = [rwcx:]PATH`
 
 Specifies which files and directories are visible.
@@ -188,20 +199,6 @@ Please consider using `.PLEDGE`, because if it's specified, and the
 specification doesn't include `inet` or `dns`, then Landlock Make won't
 need to spawn monitor processes, which is more efficient, since pledge()
 will block the socket system calls in pure in-kernel BPF code.
-
-#### `.STRICT = BOOL`
-
-Disables implicit unveiling and $PATH searching.
-
-Using this setting is recommended, but it's disabled by default in order
-to offer a gentler path for folks to get accustomed to the Landlock Make
-way of doing things.
-
-This variable may be specified on a build target, a pattern rule, or the
-global scope (by order of precedence).
-
-Valid truth values are `1` or `true` case insensitively. Other values
-are false.
 
 #### `.UNSANDBOXED = BOOL`
 
@@ -382,61 +379,7 @@ uniq = $(if $1,$(firstword $1) $(call uniq,$(filter-out $(firstword $1),$1)))
 endif
 ```
 
-### Implicit Paths
-
-To provide a smooth migration path, the default mode of operation is
-`.STRICT = 0` which is intended to be lenient in permitting well-known
-paths. It's a weaker sandbox, but should help ensure things "just work"
-for anyone getting started.
-
-#### Always Unveiled
-
-In non-strict mode, the following paths are always unveiled:
-
-- `/tmp` with `rwc` permissions
-- `/dev/zero` with `r` permissions
-- `/dev/null` with `rw` permissions
-- `/dev/full` with `rw` permissions
-- `/dev/stdin` with `rw` permissions
-- `/dev/stdout` with `rw` permissions
-- `/dev/stderr` with `rw` permissions
-- `/etc/hosts` with `r` permissions
-
-#### Dynamic Executables
-
-Non-strict mode allows Landlock Make to search your system `$PATH` to
-figure out the path of your executable. Landlock Make will check if it's
-a dynamic shared object. What we mean by that is an ELF executable that
-has `e_type == ET_DYN`, or a `PT_INTERP` or `PT_DYNAMIC` program header.
-If any of those is the case, then the following paths are auto-unveiled:
-
-- `/bin` with `rx` permissions
-- `/lib` with `rx` permissions
-- `/lib64` with `rx` permissions
-- `/usr/bin` with `rx` permissions
-- `/usr/lib` with `rx` permissions
-- `/usr/lib64` with `rx` permissions
-- `/usr/local/lib` with `rx` permissions
-- `/usr/local/lib64` with `rx` permissions
-- `/etc/ld-musl-x86_64.path` with `r` permissions
-- `/etc/ld.so.conf` with `r` permissions
-- `/etc/ld.so.cache` with `r` permissions
-- `/etc/ld.so.conf.d` with `r` permissions
-- `/etc/ld.so.preload` with `r` permissions
-- `/usr/include` with `r` permissions
-- `/usr/share/locale` with `r` permissions
-- `/usr/share/locale-langpack` with `r` permissions
-
-Therefore if you run a dynamic executable (e.g. /bin/sh) in non-strict
-mode, then all functionality provided by your system may be exposed.
-That's not great, but it's not so bad either. For example, a job may be
-able to `eject` your cd-rom drive, but it still won't be able to fish
-the bitcoin wallet out of your home folder. If you need a stronger
-model, then consider vendoring static executable tools. That way past
-revisions of your project can be compiled and git bisected without the
-assistance of things like Docker.
-
-#### Pledged Paths
+### Pledged Paths
 
 If you use the `.PLEDGE` feature then certain paths will be unveiled
 automatically, based on your list of promises.
